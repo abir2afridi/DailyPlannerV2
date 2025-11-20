@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes - Daily Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .note-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid var(--border-color);
+        }
+        
+        .note-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        
+        .note-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .note-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--accent-color-2);
+        }
+        
+        .note-date {
+            font-size: 0.85rem;
+            color: var(--text-color-light);
+        }
+        
+        .note-content {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+        
+        .note-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: flex-end;
+        }
+        
+        .note-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-color-light);
+            transition: color 0.2s;
+            font-size: 1.1rem;
+            padding: 0.25rem;
+            border-radius: 4px;
+        }
+        
+        .note-btn:hover {
+            color: var(--accent-color-2);
+            background: var(--body-bg);
+        }
+        
+        .add-note-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            background: var(--body-bg);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .add-note-card:hover {
+            border-color: var(--accent-color-2);
+            background: rgba(142, 68, 173, 0.05);
+        }
+        
+        .add-note-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent-color-2);
+        }
+        
+        .add-note-text {
+            font-weight: 500;
+            color: var(--accent-color-2);
+        }
+        
+        .note-category {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: var(--body-bg);
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .categories-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .category-filter {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--body-bg);
+            font-size: 0.9rem;
+        }
+        
+        .category-filter.active, .category-filter:hover {
+            background: var(--accent-grad);
+            color: white;
+            border-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="planner-container">
+        <header>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="calendar.html" class="nav-link">Calendar</a></li>
+                    <li><a href="tasks.html" class="nav-link">Tasks</a></li>
+                    <li><a href="notes.html" class="nav-link active">Notes</a></li>
+                    <li><a href="settings.html" class="nav-link">Settings</a></li>
+                </ul>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <div class="categories-container">
+                <button class="category-filter active" data-category="all">All</button>
+                <button class="category-filter" data-category="work">Work</button>
+                <button class="category-filter" data-category="personal">Personal</button>
+                <button class="category-filter" data-category="ideas">Ideas</button>
+                <button class="category-filter" data-category="important">Important</button>
+            </div>
+            
+            <div class="notes-container" id="notes-container">
+                <!-- Note cards will be populated by JavaScript -->
+                <div class="note-card">
+                    <div class="note-header">
+                        <h3 class="note-title">Project Ideas</h3>
+                        <span class="note-date">Nov 18, 2025</span>
+                    </div>
+                    <div class="note-category">Work</div>
+                    <div class="note-content">
+                        <p>Brainstorming ideas for the new project. Need to consider user experience and scalability.</p>
+                    </div>
+                    <div class="note-actions">
+                        <button class="note-btn" title="Edit">✏️</button>
+                        <button class="note-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                
+                <div class="note-card">
+                    <div class="note-header">
+                        <h3 class="note-title">Shopping List</h3>
+                        <span class="note-date">Nov 17, 2025</span>
+                    </div>
+                    <div class="note-category">Personal</div>
+                    <div class="note-content">
+                        <p>- Milk<br>- Eggs<br>- Bread<br>- Fruits</p>
+                    </div>
+                    <div class="note-actions">
+                        <button class="note-btn" title="Edit">✏️</button>
+                        <button class="note-btn" title="Delete">🗑️</button>
+                    </div>
+                </div>
+                
+                <div class="add-note-card" id="add-note">
+                    <div class="add-note-icon">+</div>
+                    <div class="add-note-text">Add New Note</div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        // Check for saved theme preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+        
+        // Apply the current theme
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.textContent = '☀️';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-theme');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Notes functionality will be added here
+        document.addEventListener('DOMContentLoaded', function() {
+            // Notes management code will go here
+            document.getElementById('add-note').addEventListener('click', function() {
+                // Add new note functionality
+                alert('Add new note functionality will be implemented here');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar - Daily Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        .calendar-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px var(--shadow-color);
+            margin-bottom: 2rem;
+            max-width: 100%;
+            overflow: hidden;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .month-navigation {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .month-navigation button {
+            background: var(--accent-grad);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .month-navigation button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .month-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-color);
+            min-width: 180px;
+            text-align: center;
+        }
+        
+        .year-title {
+            font-size: 1.25rem;
+            color: var(--text-color-light);
+            margin-left: 0.5rem;
+        }
+        
+        
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .day-names {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            color: var(--accent-color-2);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+        
+        .day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-radius: 8px;
+            background: var(--body-bg);
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            border: 1px solid transparent;
+        }
+        
+        .day:hover {
+            background: var(--accent-color-2);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px var(--shadow-color);
+        }
+        
+        .day-number {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        
+        .day-events {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .event-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-color-1);
+            align-self: center;
+        }
+        
+        .day.today {
+            background: var(--accent-grad);
+            color: white;
+            font-weight: 600;
+            border-color: transparent;
+        }
+        
+        .day.other-month {
+            opacity: 0.5;
+            background: transparent;
+        }
+        
+        .day.other-month:hover {
+            opacity: 0.8;
+        }
+        
+        .day.has-events::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent-color-1);
+        }
+        
+        .events-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 15px var(--shadow-color);
+        }
+        
+        .events-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .events-title {
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--text-color);
+        }
+        
+        .add-event-btn {
+            background: var(--accent-grad);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+        
+        .add-event-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+        
+        .events-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .event-item {
+            background: var(--body-bg);
+            border-radius: 8px;
+            padding: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all 0.2s;
+            border-left: 4px solid var(--accent-color-1);
+        }
+        
+        .event-item:hover {
+            transform: translateX(5px);
+            box-shadow: 2px 2px 10px var(--shadow-color);
+        }
+        
+        .event-time {
+            font-weight: 600;
+            color: var(--accent-color-2);
+            min-width: 80px;
+        }
+        
+        .event-details {
+            flex-grow: 1;
+        }
+        
+        .event-title {
+            margin: 0 0 0.25rem 0;
+            font-size: 1rem;
+            color: var(--text-color);
+        }
+        
+        .event-location {
+            font-size: 0.85rem;
+            color: var(--text-color-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .no-events {
+            text-align: center;
+            color: var(--text-color-light);
+            padding: 2rem 0;
+        }
+        
+        @media (max-width: 768px) {
+            .calendar-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .month-navigation {
+                justify-content: space-between;
+                margin-bottom: 1rem;
+            }
+            
+            .day {
+                padding: 0.25rem;
+                font-size: 0.9rem;
+            }
+            
+            .day-number {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="planner-container">
+        <header>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="calendar.html" class="nav-link active">Calendar</a></li>
+                    <li><a href="tasks.html" class="nav-link">Tasks</a></li>
+                    <li><a href="notes.html" class="nav-link">Notes</a></li>
+                    <li><a href="settings.html" class="nav-link">Settings</a></li>
+                </ul>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <div class="calendar-container">
+                <div class="calendar-header">
+                    <div class="month-navigation">
+                        <button id="prev-month" title="Previous Month">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div>
+                            <span id="current-month" class="month-title">November</span>
+                            <span id="current-year" class="year-title">2025</span>
+                        </div>
+                        <button id="next-month" title="Next Month">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    <button id="today-btn" class="btn">Today</button>
+                </div>
+                
+                <div class="day-names">
+                    <div>Sun</div>
+                    <div>Mon</div>
+                    <div>Tue</div>
+                    <div>Wed</div>
+                    <div>Thu</div>
+                    <div>Fri</div>
+                    <div>Sat</div>
+                </div>
+                
+                <div class="days-grid" id="calendar-days">
+                    <!-- Calendar days will be populated by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="events-container">
+                <div class="events-header">
+                    <h2 class="events-title">Upcoming Events</h2>
+                    <button id="add-event" class="add-event-btn">
+                        <i class="fas fa-plus"></i> Add Event
+                    </button>
+                </div>
+                <div class="events-list" id="upcoming-events">
+                    <div class="event-item">
+                        <div class="event-time">10:00 AM</div>
+                        <div class="event-details">
+                            <h3 class="event-title">Team Meeting</h3>
+                            <div class="event-location">
+                                <i class="fas fa-video"></i> Zoom Meeting
+                            </div>
+                        </div>
+                    </div>
+                    <div class="event-item">
+                        <div class="event-time">2:30 PM</div>
+                        <div class="event-details">
+                            <h3 class="event-title">Project Deadline</h3>
+                            <div class="event-location">
+                                <i class="fas fa-briefcase"></i> Work
+                            </div>
+                        </div>
+                    </div>
+                    <div id="no-events" class="no-events" style="display: none;">
+                        No events scheduled for this day.
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        // Check for saved theme preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+        
+        // Apply the current theme
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.textContent = '☀️';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-theme');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Calendar Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarDays = document.getElementById('calendar-days');
+            const currentMonthElement = document.getElementById('current-month');
+            const currentYearElement = document.getElementById('current-year');
+            const prevMonthBtn = document.getElementById('prev-month');
+            const nextMonthBtn = document.getElementById('next-month');
+            const todayBtn = document.getElementById('today-btn');
+            const addEventBtn = document.getElementById('add-event');
+            
+            let currentDate = new Date();
+            let currentMonth = currentDate.getMonth();
+            let currentYear = currentDate.getFullYear();
+            
+            // Sample events data (in a real app, this would come from a database)
+            const events = {
+                '2025-11-15': [
+                    { id: 1, title: 'Team Meeting', time: '10:00 AM', location: 'Zoom Meeting', type: 'meeting' },
+                    { id: 2, title: 'Lunch with Sarah', time: '12:30 PM', location: 'Downtown Cafe', type: 'personal' }
+                ],
+                '2025-11-20': [
+                    { id: 3, title: 'Project Deadline', time: '11:59 PM', location: 'Work', type: 'work' }
+                ],
+                '2025-11-25': [
+                    { id: 4, title: 'Dentist Appointment', time: '2:00 PM', location: 'Dental Clinic', type: 'personal' }
+                ]
+            };
+            
+            // Month names
+            const monthNames = [
+                'January', 'February', 'March', 'April', 'May', 'June',
+                'July', 'August', 'September', 'October', 'November', 'December'
+            ];
+            
+            // Day names
+            const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            
+            // Initialize the calendar
+            function initCalendar() {
+                updateCalendar();
+                updateEvents(new Date().toISOString().split('T')[0]);
+            }
+            
+            // Update the calendar display
+            function updateCalendar() {
+                // Update month and year display
+                currentMonthElement.textContent = monthNames[currentMonth];
+                currentYearElement.textContent = currentYear;
+                
+                // Clear previous days
+                calendarDays.innerHTML = '';
+                
+                // Get first and last day of month
+                const firstDay = new Date(currentYear, currentMonth, 1);
+                const lastDay = new Date(currentYear, currentMonth + 1, 0);
+                const daysInMonth = lastDay.getDate();
+                const startingDay = firstDay.getDay();
+                
+                // Get previous month's days
+                const prevMonthLastDay = new Date(currentYear, currentMonth, 0).getDate();
+                
+                // Add previous month's days
+                for (let i = startingDay; i > 0; i--) {
+                    const dayElement = createDayElement(prevMonthLastDay - i + 1, true);
+                    calendarDays.appendChild(dayElement);
+                }
+                
+                // Add current month's days
+                const today = new Date();
+                const isCurrentMonth = today.getMonth() === currentMonth && today.getFullYear() === currentYear;
+                
+                for (let i = 1; i <= daysInMonth; i++) {
+                    const dayElement = createDayElement(i, false, isCurrentMonth && i === today.getDate());
+                    
+                    // Check if day has events
+                    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+                    if (events[dateStr]) {
+                        dayElement.classList.add('has-events');
+                    }
+                    
+                    calendarDays.appendChild(dayElement);
+                }
+                
+                // Add next month's days
+                const daysToAdd = 42 - (daysInMonth + startingDay); // 6 rows x 7 days = 42
+                for (let i = 1; i <= daysToAdd; i++) {
+                    const dayElement = createDayElement(i, true);
+                    calendarDays.appendChild(dayElement);
+                }
+                
+                // Add click event to days
+                document.querySelectorAll('.day:not(.other-month)').forEach(day => {
+                    day.addEventListener('click', function() {
+                        document.querySelectorAll('.day').forEach(d => d.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        const dayNum = parseInt(this.querySelector('.day-number').textContent);
+                        const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+                        updateEvents(dateStr);
+                    });
+                });
+            }
+            
+            // Create a day element
+            function createDayElement(day, isOtherMonth, isToday = false) {
+                const dayElement = document.createElement('div');
+                dayElement.className = 'day' + (isOtherMonth ? ' other-month' : '') + (isToday ? ' today' : '');
+                
+                dayElement.innerHTML = `
+                    <div class="day-number">${day}</div>
+                    <div class="day-events"></div>
+                `;
+                
+                return dayElement;
+            }
+            
+            // Update events list
+            function updateEvents(dateStr) {
+                const eventsList = document.getElementById('upcoming-events');
+                const noEvents = document.getElementById('no-events');
+                
+                if (events[dateStr] && events[dateStr].length > 0) {
+                    eventsList.innerHTML = '';
+                    noEvents.style.display = 'none';
+                    
+                    events[dateStr].forEach(event => {
+                        const eventElement = document.createElement('div');
+                        eventElement.className = 'event-item';
+                        eventElement.innerHTML = `
+                            <div class="event-time">${event.time}</div>
+                            <div class="event-details">
+                                <h3 class="event-title">${event.title}</h3>
+                                <div class="event-location">
+                                    <i class="fas fa-${event.type === 'meeting' ? 'video' : event.type === 'work' ? 'briefcase' : 'calendar'}"></i>
+                                    ${event.location}
+                                </div>
+                            </div>
+                        `;
+                        eventsList.appendChild(eventElement);
+                    });
+                } else {
+                    eventsList.innerHTML = '';
+                    noEvents.style.display = 'block';
+                }
+            }
+            
+            // Event listeners
+            prevMonthBtn.addEventListener('click', () => {
+                currentMonth--;
+                if (currentMonth < 0) {
+                    currentMonth = 11;
+                    currentYear--;
+                }
+                updateCalendar();
+            });
+            
+            nextMonthBtn.addEventListener('click', () => {
+                currentMonth++;
+                if (currentMonth > 11) {
+                    currentMonth = 0;
+                    currentYear++;
+                }
+                updateCalendar();
+            });
+            
+            todayBtn.addEventListener('click', () => {
+                const today = new Date();
+                currentMonth = today.getMonth();
+                currentYear = today.getFullYear();
+                updateCalendar();
+                
+                // Select today's date
+                const dayElements = document.querySelectorAll('.day:not(.other-month)');
+                dayElements.forEach(day => {
+                    if (day.querySelector('.day-number').textContent === String(today.getDate())) {
+                        day.click();
+                    }
+                });
+            });
+            
+            addEventBtn.addEventListener('click', () => {
+                alert('Add new event functionality will be implemented here');
+                // In a real app, this would open a modal to add a new event
+            });
+            
+            // Initialize the calendar
+            initCalendar();
+        });
+    </script>
+</body>
+</html>

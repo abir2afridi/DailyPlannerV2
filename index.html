@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Planner</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div class="planner-container">
+        <header>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html" class="nav-link active">Home</a></li>
+                    <li><a href="pages/calendar.html" class="nav-link">Calendar</a></li>
+                    <li><a href="pages/tasks.html" class="nav-link">Tasks</a></li>
+                    <li><a href="pages/notes.html" class="nav-link">Notes</a></li>
+                    <li><a href="pages/settings.html" class="nav-link">Settings</a></li>
+                </ul>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </nav>
+            <div class="header-top">
+                <img src="IUB Logo_2024_Color.png" alt="IUB Logo" class="iub-logo">
+                <div class="title-wrapper">
+                    <h1>Daily Planner</h1>
+                    <span class="line"></span>
+                </div>
+            </div>
+            <div class="header-details">
+                <div class="date-input">
+                    <label for="month-year">Month / Year :</label>
+                    <input type="text" id="month-year" aria-label="Month and Year">
+                </div>
+                <div class="days-of-week" role="group" aria-label="Select day of the week">
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Mo">Mo</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Tu">Tu</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="We">We</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Th">Th</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Fr">Fr</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Sa">Sa</div>
+                    <div class="day-toggle" role="button" aria-pressed="false" data-day="Su">Su</div>
+                </div>
+            </div>
+        </header>
+
+        <main class="content-grid">
+            <div class="left-column">
+                <section class="schedule" aria-labelledby="schedule-title">
+                    <h2 id="schedule-title">Schedule</h2>
+                    <div class="time-slots">
+                        <div class="time-slot"><span class="time-label">06:00</span><input type="text" aria-label="Schedule for 6 AM"></div>
+                        <div class="time-slot"><span class="time-label">07:00</span><input type="text" aria-label="Schedule for 7 AM"></div>
+                        <div class="time-slot"><span class="time-label">08:00</span><input type="text" aria-label="Schedule for 8 AM"></div>
+                        <div class="time-slot"><span class="time-label">09:00</span><input type="text" aria-label="Schedule for 9 AM"></div>
+                        <div class="time-slot"><span class="time-label">10:00</span><input type="text" aria-label="Schedule for 10 AM"></div>
+                        <div class="time-slot"><span class="time-label">11:00</span><input type="text" aria-label="Schedule for 11 AM"></div>
+                        <div class="time-slot"><span class="time-label">12:00</span><input type="text" aria-label="Schedule for 12 PM"></div>
+                        <div class="time-slot"><span class="time-label">13:00</span><input type="text" aria-label="Schedule for 1 PM"></div>
+                        <div class="time-slot"><span class="time-label">14:00</span><input type="text" aria-label="Schedule for 2 PM"></div>
+                        <div class="time-slot"><span class="time-label">15:00</span><input type="text" aria-label="Schedule for 3 PM"></div>
+                        <div class="time-slot"><span class="time-label">16:00</span><input type="text" aria-label="Schedule for 4 PM"></div>
+                        <div class="time-slot"><span class="time-label">17:00</span><input type="text" aria-label="Schedule for 5 PM"></div>
+                        <div class="time-slot"><span class="time-label">18:00</span><input type="text" aria-label="Schedule for 6 PM"></div>
+                        <div class="time-slot"><span class="time-label">19:00</span><input type="text" aria-label="Schedule for 7 PM"></div>
+                        <div class="time-slot"><span class="time-label">20:00</span><input type="text" aria-label="Schedule for 8 PM"></div>
+                        <div class="time-slot"><span class="time-label">21:00</span><input type="text" aria-label="Schedule for 9 PM"></div>
+                        <div class="time-slot"><span class="time-label">22:00</span><input type="text" aria-label="Schedule for 10 PM"></div>
+                    </div>
+                </section>
+                <section class="trackers-container" aria-label="Daily trackers">
+                    <div class="tracker-item water-tracker-container">
+                        <h3>Water Intake</h3>
+                        <div class="water-tracker" role="group" aria-label="Water intake tracker, 8 glasses">
+                            <div class="glass" data-glass-index="0" aria-label="1st glass of water"></div>
+                            <div class="glass" data-glass-index="1" aria-label="2nd glass of water"></div>
+                            <div class="glass" data-glass-index="2" aria-label="3rd glass of water"></div>
+                            <div class="glass" data-glass-index="3" aria-label="4th glass of water"></div>
+                            <div class="glass" data-glass-index="4" aria-label="5th glass of water"></div>
+                            <div class="glass" data-glass-index="5" aria-label="6th glass of water"></div>
+                            <div class="glass" data-glass-index="6" aria-label="7th glass of water"></div>
+                            <div class="glass" data-glass-index="7" aria-label="8th glass of water"></div>
+                        </div>
+                        <p id="water-count">0 / 8 glasses</p>
+                    </div>
+                    <div class="tracker-item mood-tracker-container">
+                        <h3>Mood</h3>
+                         <div class="mood-tracker" role="radiogroup" aria-label="Mood tracker">
+                            <label><input type="radio" name="mood" value="happy"><span>😀</span></label>
+                            <label><input type="radio" name="mood" value="smile"><span>😊</span></label>
+                            <label><input type="radio" name="mood" value="cool"><span>😎</span></label>
+                            <label><input type="radio" name="mood" value="neutral"><span>😐</span></label>
+                            <label><input type="radio" name="mood" value="worried"><span>😟</span></label>
+                            <label><input type="radio" name="mood" value="angry"><span>😠</span></label>
+                            <label><input type="radio" name="mood" value="furious"><span>😡</span></label>
+                        </div>
+                        <p id="mood-description">&nbsp;</p>
+                    </div>
+                </section>
+            </div>
+            <div class="right-column">
+                 <section class="quote-of-the-day" aria-label="Quote of the Day">
+                    <figure>
+                        <blockquote id="quote-text"></blockquote>
+                        <figcaption id="quote-author"></figcaption>
+                    </figure>
+                </section>
+                <section class="top-priorities" aria-labelledby="priorities-title">
+                    <h2 id="priorities-title">Top Priorities</h2>
+                    <textarea aria-labelledby="priorities-title" placeholder="What are your top priorities for today?"></textarea>
+                </section>
+                <section class="to-do-list" aria-labelledby="todo-title">
+                    <h2 id="todo-title">To Do List</h2>
+                    <div class="todo-body">
+                        <ul id="todo-list-items"></ul>
+                        <div class="todo-add">
+                            <input type="text" id="new-task-input" placeholder="Add a new task..." aria-label="New task input">
+                            <button id="add-task-btn" aria-label="Add new task">Add</button>
+                        </div>
+                    </div>
+                </section>
+                <section class="notes" aria-labelledby="notes-title">
+                    <h2 id="notes-title">Notes</h2>
+                    <textarea aria-labelledby="notes-title" placeholder="Jot down your thoughts..."></textarea>
+                </section>
+            </div>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <div class="iub-text">
+                    Independent University, Bangladesh | Department of Computer Science and Engineering
+                </div>
+                <div class="footer-text">
+                    powered by <span class="signature">TheDevAbir | CodeCrafted</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        // Check for saved theme preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+        
+        // Apply the current theme
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.textContent = '☀️';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-theme');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Update icon when system preference changes
+        prefersDarkScheme.addEventListener('change', e => {
+            if (!localStorage.getItem('theme')) {
+                const isDark = e.matches;
+                document.body.classList.toggle('dark-theme', isDark);
+                themeIcon.textContent = isDark ? '☀️' : '🌙';
+            }
+        });
+    </script>
+    <script type="module" src="index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

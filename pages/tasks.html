@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks - Daily Planner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../index.css">
+    <style>
+        .tasks-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px var(--shadow-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .task-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            background: var(--body-bg);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-grad);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .task-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            background: var(--body-bg);
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+        
+        .task-item:hover {
+            transform: translateX(5px);
+            box-shadow: 2px 2px 8px var(--shadow-color);
+        }
+        
+        .task-checkbox {
+            margin-right: 1rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            appearance: none;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .task-checkbox:checked {
+            background: var(--accent-grad);
+            border-color: transparent;
+        }
+        
+        .task-checkbox:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 0.9rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .task-title {
+            flex-grow: 1;
+            margin: 0;
+        }
+        
+        .task-due {
+            font-size: 0.9rem;
+            color: var(--text-color-light);
+            margin-right: 1rem;
+        }
+        
+        .priority-high {
+            border-left: 4px solid #e74c3c;
+        }
+        
+        .priority-medium {
+            border-left: 4px solid #f39c12;
+        }
+        
+        .priority-low {
+            border-left: 4px solid #2ecc71;
+        }
+        
+        .add-task {
+            display: flex;
+            margin-top: 1.5rem;
+            gap: 1rem;
+        }
+        
+        .add-task input {
+            flex-grow: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            background: var(--body-bg);
+            color: var(--text-color);
+        }
+        
+        .add-task button {
+            background: var(--accent-grad);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 0 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .add-task button:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="planner-container">
+        <header>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html" class="nav-link">Home</a></li>
+                    <li><a href="calendar.html" class="nav-link">Calendar</a></li>
+                    <li><a href="tasks.html" class="nav-link active">Tasks</a></li>
+                    <li><a href="notes.html" class="nav-link">Notes</a></li>
+                    <li><a href="settings.html" class="nav-link">Settings</a></li>
+                </ul>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark/light mode">
+                    <span class="theme-icon">🌙</span>
+                </button>
+            </nav>
+        </header>
+
+        <main>
+            <div class="tasks-container">
+                <h1>My Tasks</h1>
+                
+                <div class="task-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="today">Today</button>
+                    <button class="filter-btn" data-filter="week">This Week</button>
+                    <button class="filter-btn" data-filter="important">Important</button>
+                    <button class="filter-btn" data-filter="completed">Completed</button>
+                </div>
+                
+                <div class="task-list" id="task-list">
+                    <!-- Task items will be populated by JavaScript -->
+                    <div class="task-item priority-high">
+                        <input type="checkbox" class="task-checkbox">
+                        <h3 class="task-title">Complete project proposal</h3>
+                        <span class="task-due">Today</span>
+                    </div>
+                    <div class="task-item priority-medium">
+                        <input type="checkbox" class="task-checkbox" checked>
+                        <h3 class="task-title">Team meeting</h3>
+                        <span class="task-due">Tomorrow</span>
+                    </div>
+                    <div class="task-item priority-low">
+                        <input type="checkbox" class="task-checkbox">
+                        <h3 class="task-title">Review code changes</h3>
+                        <span class="task-due">Nov 25</span>
+                    </div>
+                </div>
+                
+                <div class="add-task">
+                    <input type="text" placeholder="Add a new task..." id="new-task-input">
+                    <button id="add-task">Add Task</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.querySelector('.theme-icon');
+        
+        // Check for saved theme preference or use system preference
+        const prefersDarkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+        const currentTheme = localStorage.getItem('theme') || (prefersDarkScheme.matches ? 'dark' : 'light');
+        
+        // Apply the current theme
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+            themeIcon.textContent = '☀️';
+        } else {
+            themeIcon.textContent = '🌙';
+        }
+        
+        // Toggle theme on button click
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.classList.toggle('dark-theme');
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
+        
+        // Task functionality will be added here
+        document.addEventListener('DOMContentLoaded', function() {
+            // Task management code will go here
+        });
+    </script>
+</body>
+</html>
