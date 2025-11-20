@@ -550,6 +550,27 @@ footer {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0.1rem 1rem;
+    position: relative;
+}
+
+.github-link {
+    position: absolute;
+    right: 1rem;
+    bottom: 0.5rem;
+    color: var(--text-color-light);
+    transition: transform 0.2s, color 0.2s;
+}
+
+.github-link:hover {
+    color: var(--accent-color-1);
+    transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+    .github-link {
+        position: static;
+        margin-top: 0.5rem;
+    }
 }
 
 .iub-text {
@@ -566,15 +587,21 @@ footer {
 }
 
 .footer-text .signature {
-    font-family: 'Rock Salt', cursive;
-    font-size: 0.7rem;
-    letter-spacing: 0.5px;
+    font-family: 'Rock Salt', cursive !important;
+    font-size: 1rem !important;
+    letter-spacing: 1px;
     background: var(--accent-grad);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
-    margin-left: 0.25rem;
+    margin-left: 4px;
+    font-weight: bold;
+}
+
+.footer-text .signature:hover {
+    transform: translateY(-1px);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 @media (max-width: 900px) {
