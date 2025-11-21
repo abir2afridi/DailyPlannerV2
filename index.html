@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daily Planner</title>
     <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
@@ -128,6 +129,37 @@
                     <h2 id="notes-title">Notes</h2>
                     <textarea aria-labelledby="notes-title" placeholder="Jot down your thoughts..."></textarea>
                 </section>
+            </div>
+            
+            <!-- Planner Sections -->
+            <div class="planner-sections">
+                <!-- Morning Section -->
+                <div id="morning" class="planner-box">
+                    <h2 id="morning-heading">☀️ Morning</h2>
+                    <input type="text" id="morning-input" placeholder="What's on your morning schedule?" aria-labelledby="morning-heading">
+                    <button id="morning-save" aria-label="Save morning schedule">Save</button>
+                </div>
+                
+                <!-- Afternoon Section -->
+                <div id="afternoon" class="planner-box">
+                    <h2 id="afternoon-heading">🌤️ Afternoon</h2>
+                    <input type="text" id="afternoon-input" placeholder="Plan your afternoon" aria-labelledby="afternoon-heading">
+                    <button id="afternoon-save" aria-label="Save afternoon schedule">Save</button>
+                </div>
+                
+                <!-- Evening Section -->
+                <div id="evening" class="planner-box">
+                    <h2 id="evening-heading">🌙 Evening</h2>
+                    <input type="text" id="evening-input" placeholder="Evening plans?" aria-labelledby="evening-heading">
+                    <button id="evening-save" aria-label="Save evening schedule">Save</button>
+                </div>
+                
+                <!-- Night Section -->
+                <div id="night" class="planner-box">
+                    <h2 id="night-heading">🌜 Night</h2>
+                    <input type="text" id="night-input" placeholder="Night routine" aria-labelledby="night-heading">
+                    <button id="night-save" aria-label="Save night schedule">Save</button>
+                </div>
             </div>
         </main>
         <footer>

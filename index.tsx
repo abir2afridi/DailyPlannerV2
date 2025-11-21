@@ -101,40 +101,55 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderTodoList = (todos: { text: string, completed: boolean }[]) => {
         if (!taskList) return;
+        
         taskList.innerHTML = '';
-        todos.forEach((task, index) => {
-            const listItem = document.createElement('li');
-            if (task.completed) {
-                listItem.classList.add('completed');
-            }
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.checked = task.completed;
-            checkbox.addEventListener('change', () => {
-                listItem.classList.toggle('completed', checkbox.checked);
-                saveCurrentDayData();
-            });
-
-            const textSpan = document.createElement('span');
-            textSpan.textContent = task.text;
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.textContent = '×';
-            deleteBtn.ariaLabel = 'Delete task';
-            deleteBtn.addEventListener('click', () => {
-                listItem.classList.add('removing');
-                listItem.addEventListener('animationend', () => {
-                    plannerData[currentDay].todos.splice(index, 1);
-                    saveCurrentDayData();
-                    renderTodoList(plannerData[currentDay].todos);
+        
+        if (!todos || todos.length === 0) {
+            taskList.innerHTML = '<li class="no-tasks">No tasks yet. Add one above!</li>';
+            return;
+        }
+        
+        todos.forEach((todo, index) => {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            li.setAttribute('data-index', index.toString());
+            
+            const checkboxId = `todo-${Date.now()}-${index}`;
+            
+            li.innerHTML = `
+                <input type="checkbox" id="${checkboxId}" ${todo.completed ? 'checked' : ''}>
+                <label for="${checkboxId}" class="todo-checkbox"></label>
+                <span class="todo-text ${todo.completed ? 'completed' : ''}">${todo.text}</span>
+                <button class="delete-task" aria-label="Delete task">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            `;
+            
+            taskList.appendChild(li);
+            
+            // Add event listeners for the new elements
+            const checkbox = li.querySelector<HTMLInputElement>('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.addEventListener('change', () => {
+                    if (todos[index]) {
+                        todos[index].completed = checkbox.checked;
+                        saveCurrentDayData();
+                        renderTodoList(todos);
+                    }
                 });
-            });
-
-            listItem.appendChild(checkbox);
-            listItem.appendChild(textSpan);
-            listItem.appendChild(deleteBtn);
-            taskList.appendChild(listItem);
+            }
+            
+            const deleteBtn = li.querySelector<HTMLButtonElement>('.delete-task');
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', () => {
+                    todos.splice(index, 1);
+                    saveCurrentDayData();
+                    renderTodoList([...todos]); // Create a new array reference to trigger re-render
+                });
+            }
         });
     };
 
@@ -233,23 +248,85 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // To-Do List add
+    // To-Do List functionality
     const addTask = () => {
-        const taskText = taskInput.value.trim();
-        if (taskText === '') return;
+        console.log('Add task button clicked');
         
-        plannerData[currentDay].todos.push({ text: taskText, completed: false });
+        if (!taskInput) {
+            console.error('Task input not found');
+            return;
+        }
+        
+        const taskText = taskInput.value.trim();
+        if (taskText === '') {
+            console.log('No task text to add');
+            return;
+        }
+        
+        console.log('Adding task:', taskText);
+        
+        // Initialize todos array if it doesn't exist
+        if (!plannerData[currentDay].todos) {
+            plannerData[currentDay].todos = [];
+        }
+        
+        // Add new task
+        plannerData[currentDay].todos.push({ 
+            text: taskText, 
+            completed: false 
+        });
+        
+        // Save to localStorage
         saveCurrentDayData();
+        
+        // Update UI
         renderTodoList(plannerData[currentDay].todos);
-
+        
+        // Clear the input field
         taskInput.value = '';
         taskInput.focus();
     };
+    
+    // Initialize todo list function
+    const initializeTodoList = () => {
+        console.log('Initializing todo list...');
+        
+        // Make sure we have all required elements
+        if (!taskList || !taskInput) {
+            console.error('Todo list elements not found');
+            return;
+        }
 
-    addTaskBtn?.addEventListener('click', addTask);
-    taskInput?.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addTask();
-    });
+        // Initialize todos array if it doesn't exist
+        if (!plannerData[currentDay].todos) {
+            plannerData[currentDay].todos = [];
+        }
+
+        // Initial render of any existing todos
+        renderTodoList(plannerData[currentDay].todos);
+
+        // Add task button event listener
+        const addTaskBtn = document.getElementById('add-task-btn');
+        if (addTaskBtn) {
+            console.log('Add task button found, adding event listener');
+            // Remove any existing event listeners to prevent duplicates
+            addTaskBtn.removeEventListener('click', addTask);
+            addTaskBtn.addEventListener('click', addTask);
+        } else {
+            console.error('Add task button not found');
+        }
+
+        // Enter key listener for task input
+        taskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                console.log('Enter key pressed');
+                addTask();
+            }
+        });
+    };
+
+    // Initialize the todo list
+    initializeTodoList();
     
     // --- Initial Setup ---
 
