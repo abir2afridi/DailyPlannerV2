@@ -1,5 +1,5 @@
 {
-  "name": "",
+  "name": "dailyplannerv2",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -8,13 +8,28 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-
-  },
   "devDependencies": {
     "@types/node": "^22.14.0",
-    
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abir2afridi/DailyPlannerV2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abir2afridi/DailyPlannerV2/issues"
+  },
+  "homepage": "https://github.com/abir2afridi/DailyPlannerV2#readme",
+  "dependencies": {
+    "body-parser": "^2.2.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql": "^2.18.1"
   }
 }
